@@ -6,22 +6,23 @@ export const useCartItems = () => {
   const [data, setData] = React.useState(undefined);
   const { accessToken } = useAuth();
 
-  const loadData = (signal) =>
-    getCartItems({ signal, token: accessToken }).then(setData);
+  const loadData = ({ token, signal }) =>
+    getCartItems({ signal, token }).then(setData);
 
   React.useEffect(() => {
-    const ab = new AbortController();
-    loadData(ab.signal);
+    if (accessToken) {
+      const ab = new AbortController();
+      loadData({ signal: ab.signal, token: accessToken });
 
-    return () => {
-      ab.abort();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      return () => {
+        ab.abort();
+      };
+    }
   }, [accessToken]);
 
   return {
     data,
-    loadData,
+    loadData: () => loadData({ token: accessToken }),
   };
 };
 

@@ -5,23 +5,22 @@ import { deleteJobApplication, getJobApplications } from "../career.service";
 export const useJobApplications = (jobId) => {
   const [data, setData] = React.useState(undefined);
   const { accessToken } = useAuth();
-  const loadData = (signal) =>
-    getJobApplications(jobId, { token: accessToken, signal }).then(setData);
+  const loadData = (jobId, { token, signal }) =>
+    getJobApplications(jobId, { token, signal }).then(setData);
 
   React.useEffect(() => {
     if (accessToken) {
       const ab = new AbortController();
-      loadData(ab.signal);
+      loadData(jobId, { token: accessToken, signal: ab.signal });
       return () => {
         ab.abort();
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jobId, accessToken]);
 
   return {
     data,
-    loadData,
+    loadData: (jobId) => loadData(jobId, { token: accessToken }),
   };
 };
 
