@@ -176,6 +176,7 @@ export const Marketplace = () => {
                 price={item.price}
                 availableStock={item.numOfStock}
                 onlyOne={item.availability === "single-item"}
+                listingId={item._id}
                 key={item._id}
               />
             ))}

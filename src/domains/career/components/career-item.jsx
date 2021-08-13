@@ -43,6 +43,7 @@ export function CareerItem({
   onEdit,
   onDelete,
   onApply,
+  showApplyButton,
 }) {
   return (
     <div className="bg-white shadow overflow-hidden sm:rounded-md">
@@ -62,7 +63,7 @@ export function CareerItem({
           </div>
         </div>
         <div className="ml-5 flex-shrink-0 inline-flex items-center justify-center gap-2">
-          {onApply && (
+          {(onApply || showApplyButton) && (
             <IconButton onClick={onApply}>
               <ChevronRightIcon className="h-5 w-5 text-gray-400" />
             </IconButton>

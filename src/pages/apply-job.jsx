@@ -26,16 +26,15 @@ export const ApplyJob = () => {
         <div className="max-w-xl mx-auto py-6 space-y-5">
           {jobs
             ? jobs.map((job) => (
-                <CareerItem
-                  title={job.title}
-                  department={job.department}
-                  level={job.level}
-                  studentFriendly={job.level === "internship"}
-                  onApply={() => {
-                    console.log("Go to details page for", job._id);
-                  }}
-                  key={job._id}
-                />
+                <a href={`/career/${job._id}`} className="block" key={job._id}>
+                  <CareerItem
+                    title={job.title}
+                    department={job.department}
+                    level={job.level}
+                    studentFriendly={job.level === "internship"}
+                    showApplyButton
+                  />
+                </a>
               ))
             : "Loading..."}
         </div>

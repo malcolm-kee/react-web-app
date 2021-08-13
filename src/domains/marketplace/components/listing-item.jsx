@@ -80,7 +80,16 @@ export const ListingItem = (props) => {
               />
             </>
           ) : (
-            <Button variant="primary">LEARN MORE</Button>
+            <Button
+              variant="primary"
+              render={(bProps) => (
+                <a href={`/listing/${props.listingId}`} {...bProps}>
+                  {bProps.children}
+                </a>
+              )}
+            >
+              LEARN MORE
+            </Button>
           )}
         </div>
       </div>
