@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { AppShell } from "./app-shell";
 import { AuthProvider } from "./domains/auth";
 import "./index.css";
@@ -16,30 +16,32 @@ ReactDOM.render(
   <BrowserRouter>
     <AuthProvider>
       <AppShell>
-        {/* should be shown at /login */}
-        <Route path="/login">
-          <LoginPage />
-        </Route>
-        {/* should be shown at /career */}
-        <Route path="/career">
-          <ApplyJob />
-        </Route>
-        {/* should be shown at /career/{jobId} */}
-        <Route path="/career/:jobId">
-          <JobDetailsPage />
-        </Route>
-        {/* should be shown at /marketplace */}
-        <Route path="/marketplace">
-          <MarketplacePublic />
-        </Route>
-        {/* should be shown at /listing/{listingId} */}
-        <Route path="/listing/:listingId">
-          <ListingDetailsPage />
-        </Route>
-        {/* should be in /shopping-cart */}
-        <Route path="/shopping-cart">
-          <ShoppingCart />
-        </Route>
+        <Switch>
+          {/* should be shown at /login */}
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          {/* should be shown at /career/{jobId} */}
+          <Route path="/career/:jobId">
+            <JobDetailsPage />
+          </Route>
+          {/* should be shown at /career */}
+          <Route path="/career">
+            <ApplyJob />
+          </Route>
+          {/* should be shown at /marketplace */}
+          <Route path="/marketplace">
+            <MarketplacePublic />
+          </Route>
+          {/* should be shown at /listing/{listingId} */}
+          <Route path="/listing/:listingId">
+            <ListingDetailsPage />
+          </Route>
+          {/* should be in /shopping-cart */}
+          <Route path="/shopping-cart">
+            <ShoppingCart />
+          </Route>
+        </Switch>
       </AppShell>
     </AuthProvider>
   </BrowserRouter>,
