@@ -11,6 +11,7 @@ import { LoginPage } from "./pages/login";
 import { ListingDetailsPage } from "./pages/listing-details";
 import { MarketplacePublic } from "./pages/marketplace-public";
 import { ShoppingCart } from "./pages/shopping-cart";
+import { PageNotFound } from "./pages/404";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -41,10 +42,13 @@ ReactDOM.render(
           <Route path="/shopping-cart">
             <ShoppingCart />
           </Route>
-          <Route path="/">
+          <Route path="/" exact>
             <div className="p-16">
               <h1 className="text-4xl">Home</h1>
             </div>
+          </Route>
+          <Route path="*">
+            <PageNotFound />
           </Route>
         </Switch>
       </AppShell>
