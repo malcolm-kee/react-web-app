@@ -6,6 +6,7 @@ import {
 import { Button } from "components/button";
 import PropTypes from "prop-types";
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 const EditButton = () => (
   <Button
@@ -83,9 +84,9 @@ export const ListingItem = (props) => {
             <Button
               variant="primary"
               render={(bProps) => (
-                <a href={`/listing/${props.listingId}`} {...bProps}>
+                <Link to={`/listing/${props.listingId}`} {...bProps}>
                   {bProps.children}
-                </a>
+                </Link>
               )}
             >
               LEARN MORE
