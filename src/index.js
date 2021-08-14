@@ -8,9 +8,9 @@ import { ApplyJob } from "./pages/apply-job";
 import { JobDetailsPage } from "./pages/job-details";
 import { LoginPage } from "./pages/login";
 
-// import { ListingDetailsPage } from "./pages/listing-details";
-// import { MarketplacePublic } from "./pages/marketplace-public";
-// import { ShoppingCart } from "./pages/shopping-cart";
+import { ListingDetailsPage } from "./pages/listing-details";
+import { MarketplacePublic } from "./pages/marketplace-public";
+import { ShoppingCart } from "./pages/shopping-cart";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -29,11 +29,17 @@ ReactDOM.render(
           <JobDetailsPage />
         </Route>
         {/* should be shown at /marketplace */}
-        {/* <MarketplacePublic /> */}
+        <Route path="/marketplace">
+          <MarketplacePublic />
+        </Route>
         {/* should be shown at /listing/{listingId} */}
-        {/* <ListingDetailsPage /> */}
+        <Route path="/listing/:listingId">
+          <ListingDetailsPage />
+        </Route>
         {/* should be in /shopping-cart */}
-        {/* <ShoppingCart /> */}
+        <Route path="/shopping-cart">
+          <ShoppingCart />
+        </Route>
       </AppShell>
     </AuthProvider>
   </BrowserRouter>,
