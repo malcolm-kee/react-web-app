@@ -1,5 +1,8 @@
 import { JobDetails } from "domains/career";
+import { useParams } from "react-router-dom";
 
 export const JobDetailsPage = () => {
-  return <JobDetails jobId="61151a2992ed8f002050c8e0" />;
+  const params = useParams();
+
+  return <JobDetails jobId={params.jobId} />;
 };
