@@ -1,5 +1,7 @@
 import { ListingDetails } from "domains/marketplace";
+import { useParams } from "react-router-dom";
 
 export const ListingDetailsPage = () => {
-  return <ListingDetails listingId="61151a2892ed8f002050c716" />;
+  const params = useParams();
+  return <ListingDetails listingId={params.listingId} />;
 };
