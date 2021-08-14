@@ -1,5 +1,6 @@
 import { useAuth, LogoutButton } from "domains/auth";
 import { ShoppingBagIcon } from "@heroicons/react/outline";
+import { Link } from "react-router-dom";
 
 export const AppShell = ({ children }) => {
   const { status } = useAuth();
@@ -10,31 +11,31 @@ export const AppShell = ({ children }) => {
         <div className="px-4">
           <div className="flex justify-between items-center py-2 max-w-7xl mx-auto border-b border-gray-200">
             <nav className="flex items-center">
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="text-xl inline-block mr-4 font-bold text-pink-700 hover:text-pink-900"
               >
                 React Lover
-              </a>
+              </Link>
               <div className="flex items-center gap-4">
-                <a
-                  href="/marketplace"
+                <Link
+                  to="/marketplace"
                   className="text-sm font-medium text-gray-700 hover:text-gray-800"
                 >
                   Marketplace
-                </a>
-                <a
-                  href="/career"
+                </Link>
+                <Link
+                  to="/career"
                   className="text-sm font-medium text-gray-700 hover:text-gray-800"
                 >
                   Career
-                </a>
+                </Link>
               </div>
             </nav>
             {status === "authenticated" ? (
               <div className="flex gap-3">
-                <a
-                  href="/shopping-cart"
+                <Link
+                  to="/shopping-cart"
                   className="group -m-2 p-2 flex items-center"
                 >
                   <ShoppingBagIcon
@@ -42,13 +43,13 @@ export const AppShell = ({ children }) => {
                     aria-hidden="true"
                   />
                   <span className="sr-only">View cart</span>
-                </a>
+                </Link>
                 <LogoutButton />
               </div>
             ) : (
-              <a href="/login" className="text-sm px-4 py-1 text-pink-500">
+              <Link href="/login" className="text-sm px-4 py-1 text-pink-500">
                 Login
-              </a>
+              </Link>
             )}
           </div>
         </div>
