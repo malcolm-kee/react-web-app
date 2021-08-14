@@ -41,6 +41,11 @@ ReactDOM.render(
           <Route path="/shopping-cart">
             <ShoppingCart />
           </Route>
+          <Route path="/">
+            <div className="p-16">
+              <h1 className="text-4xl">Home</h1>
+            </div>
+          </Route>
         </Switch>
       </AppShell>
     </AuthProvider>
