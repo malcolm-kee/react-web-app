@@ -14,6 +14,7 @@ import { MarketplacePublic } from "./pages/marketplace-public";
 import { ShoppingCart } from "./pages/shopping-cart";
 import { PageNotFound } from "./pages/404";
 import { Career } from "./pages/career";
+import { Marketplace } from "./pages/marketplace";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +47,9 @@ ReactDOM.render(
             </Route>
             <Route path="/listing/:listingId">
               <ListingDetailsPage />
+            </Route>
+            <Route path="/listing-admin">
+              <Marketplace />
             </Route>
             <Route path="/shopping-cart">
               <ShoppingCart />

@@ -1,6 +1,7 @@
 import { BASE_URL } from "const";
 import { ListingItem, useListings } from "domains/marketplace";
 import * as React from "react";
+import { useMutation } from "react-query";
 import { Select } from "../components/select";
 import { Textarea } from "../components/textarea";
 
@@ -12,6 +13,8 @@ const createListing = (data) =>
       "Content-Type": "application/json",
     },
   }).then((res) => res.json());
+
+const useCreateListingMutation = () => useMutation(createListing);
 
 const usePersistedState = (storageKey, defaultValue) => {
   const [value, setValue] = React.useState(
@@ -26,7 +29,7 @@ const usePersistedState = (storageKey, defaultValue) => {
 };
 
 export const Marketplace = () => {
-  const { listings, loadListings, page, setPage } = useListings();
+  const { data: listings, refetch, page, setPage } = useListings();
 
   const [title, setTitle] = usePersistedState("title", "");
 
@@ -41,31 +44,38 @@ export const Marketplace = () => {
 
   const titleInputRef = React.useRef();
 
+  const createListingMutation = useCreateListingMutation();
+
   return (
     <div>
       <form
         onSubmit={(ev) => {
           ev.preventDefault();
-          createListing({
-            title,
-            price: Number(price),
-            description,
-            condition,
-            availability,
-            numOfStock: Number(numOfStock),
-          }).then(() => {
-            loadListings();
-            setTitle("");
-            setPrice("");
-            setDescription("");
-            setCondition("new");
-            setAvailability("in-stock");
-            setNumOfStock("");
+          createListingMutation.mutate(
+            {
+              title,
+              price: Number(price),
+              description,
+              condition,
+              availability,
+              numOfStock: Number(numOfStock),
+            },
+            {
+              onSuccess: () => {
+                refetch();
+                setTitle("");
+                setPrice("");
+                setDescription("");
+                setCondition("new");
+                setAvailability("in-stock");
+                setNumOfStock("");
 
-            if (titleInputRef.current) {
-              titleInputRef.current.focus();
+                if (titleInputRef.current) {
+                  titleInputRef.current.focus();
+                }
+              },
             }
-          });
+          );
         }}
       >
         <div className="p-3">New Listing</div>
