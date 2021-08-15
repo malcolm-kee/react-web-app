@@ -5,7 +5,9 @@ import { getListingDetails, getListings } from "../marketplace.service";
 export const useListings = () => {
   const [page, setPage] = React.useState(1);
 
-  const query = useQuery(["listings", page], () => getListings(page));
+  const query = useQuery(["listings", page], () => getListings(page), {
+    staleTime: 3000,
+  });
 
   return {
     ...query,
@@ -15,7 +17,11 @@ export const useListings = () => {
 };
 
 export const useListingDetails = (listingId) => {
-  return useQuery(["listingDetails", listingId], () =>
-    getListingDetails(listingId)
+  return useQuery(
+    ["listingDetails", listingId],
+    () => getListingDetails(listingId),
+    {
+      staleTime: 3000,
+    }
   );
 };
