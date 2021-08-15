@@ -13,6 +13,7 @@ import { ListingDetailsPage } from "./pages/listing-details";
 import { MarketplacePublic } from "./pages/marketplace-public";
 import { ShoppingCart } from "./pages/shopping-cart";
 import { PageNotFound } from "./pages/404";
+import { Career } from "./pages/career";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +37,9 @@ ReactDOM.render(
             </Route>
             <Route path="/career">
               <ApplyJob />
+            </Route>
+            <Route path="/career-admin">
+              <Career />
             </Route>
             <Route path="/marketplace">
               <MarketplacePublic />

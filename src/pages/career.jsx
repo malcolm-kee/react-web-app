@@ -35,7 +35,7 @@ export const Career = () => {
 
   const titleInputRef = React.useRef();
 
-  const { loadJobs, page, setPage, jobs } = useJobs();
+  const { page, setPage, data: jobs, refetch } = useJobs();
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -50,7 +50,7 @@ export const Career = () => {
               summary,
               headcount: Number(headcount),
             }).then(() => {
-              loadJobs();
+              refetch();
               setTitle("");
               setLevel("internship");
               setDepartment("");
