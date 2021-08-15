@@ -15,18 +15,5 @@ export const useJobs = () => {
 };
 
 export const useJobDetails = (jobId) => {
-  const [data, setData] = React.useState(undefined);
-
-  React.useEffect(() => {
-    const ab = new AbortController();
-    getJobDetails(jobId, ab.signal).then(setData);
-
-    return () => {
-      ab.abort();
-    };
-  }, [jobId]);
-
-  return {
-    data,
-  };
+  return useQuery(["jobDetails", jobId], () => getJobDetails(jobId));
 };
