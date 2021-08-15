@@ -1,20 +1,6 @@
-import { BASE_URL } from "const";
-import { CareerItem, useJobs } from "domains/career";
-import { fetchJson } from "lib/fetch-json";
+import { CareerItem, useCreateJobMutation, useJobs } from "domains/career";
 import * as React from "react";
-import { useMutation } from "react-query";
 import { TextInput } from "../components/text-input";
-
-const createJob = (data) =>
-  fetchJson(`${BASE_URL}/job`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: data,
-  });
-
-const useCreateJobMutation = () => useMutation((data) => createJob(data));
 
 const usePersistedState = (storageKey, defaultValue) => {
   const [value, setValue] = React.useState(

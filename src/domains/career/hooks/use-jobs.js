@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useQuery } from "react-query";
-import { getJobs, getJobDetails } from "../career.service";
+import { useQuery, useMutation } from "react-query";
+import { getJobs, getJobDetails, createJob } from "../career.service";
 
 export const useJobs = () => {
   const [page, setPage] = React.useState(1);
@@ -21,3 +21,6 @@ export const useJobDetails = (jobId) => {
     staleTime: 5000,
   });
 };
+
+export const useCreateJobMutation = () =>
+  useMutation((data) => createJob(data));

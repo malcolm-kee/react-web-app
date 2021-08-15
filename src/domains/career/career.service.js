@@ -40,3 +40,12 @@ export const getJobs = (page, signal) => {
 
 export const getJobDetails = (jobId, signal) =>
   fetchJson(`${BASE_URL}/job/${jobId}`, { signal });
+
+export const createJob = (data) =>
+  fetchJson(`${BASE_URL}/job`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: data,
+  });
