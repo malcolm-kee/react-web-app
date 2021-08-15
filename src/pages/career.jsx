@@ -24,7 +24,7 @@ export const Career = () => {
 
   const titleInputRef = React.useRef();
 
-  const { page, setPage, data: jobs, refetch } = useJobs();
+  const { page, setPage, data: jobs } = useJobs();
   const createJobMutation = useCreateJobMutation();
 
   return (
@@ -43,7 +43,6 @@ export const Career = () => {
               },
               {
                 onSuccess: () => {
-                  refetch();
                   setTitle("");
                   setLevel("internship");
                   setDepartment("");

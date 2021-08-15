@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useQuery, useMutation } from "react-query";
-import { getJobs, getJobDetails, createJob } from "../career.service";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { createJob, getJobDetails, getJobs } from "../career.service";
 
 export const useJobs = () => {
   const [page, setPage] = React.useState(1);
@@ -22,5 +22,9 @@ export const useJobDetails = (jobId) => {
   });
 };
 
-export const useCreateJobMutation = () =>
-  useMutation((data) => createJob(data));
+export const useCreateJobMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation((data) => createJob(data), {
+    onSuccess: () => queryClient.invalidateQueries("jobs"),
+  });
+};
