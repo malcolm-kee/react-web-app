@@ -14,7 +14,13 @@ import { MarketplacePublic } from "./pages/marketplace-public";
 import { ShoppingCart } from "./pages/shopping-cart";
 import { PageNotFound } from "./pages/404";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 3000,
+    },
+  },
+});
 
 ReactDOM.render(
   <BrowserRouter>
