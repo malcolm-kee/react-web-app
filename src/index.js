@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { AppShell } from "./app-shell";
 import { AuthProvider } from "./domains/auth";
@@ -13,40 +14,44 @@ import { MarketplacePublic } from "./pages/marketplace-public";
 import { ShoppingCart } from "./pages/shopping-cart";
 import { PageNotFound } from "./pages/404";
 
+const queryClient = new QueryClient();
+
 ReactDOM.render(
   <BrowserRouter>
-    <AuthProvider>
-      <AppShell>
-        <Switch>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Route path="/career/:jobId">
-            <JobDetailsPage />
-          </Route>
-          <Route path="/career">
-            <ApplyJob />
-          </Route>
-          <Route path="/marketplace">
-            <MarketplacePublic />
-          </Route>
-          <Route path="/listing/:listingId">
-            <ListingDetailsPage />
-          </Route>
-          <Route path="/shopping-cart">
-            <ShoppingCart />
-          </Route>
-          <Route path="/" exact>
-            <div className="p-16">
-              <h1 className="text-4xl">Home</h1>
-            </div>
-          </Route>
-          <Route path="*">
-            <PageNotFound />
-          </Route>
-        </Switch>
-      </AppShell>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <AppShell>
+          <Switch>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <Route path="/career/:jobId">
+              <JobDetailsPage />
+            </Route>
+            <Route path="/career">
+              <ApplyJob />
+            </Route>
+            <Route path="/marketplace">
+              <MarketplacePublic />
+            </Route>
+            <Route path="/listing/:listingId">
+              <ListingDetailsPage />
+            </Route>
+            <Route path="/shopping-cart">
+              <ShoppingCart />
+            </Route>
+            <Route path="/" exact>
+              <div className="p-16">
+                <h1 className="text-4xl">Home</h1>
+              </div>
+            </Route>
+            <Route path="*">
+              <PageNotFound />
+            </Route>
+          </Switch>
+        </AppShell>
+      </AuthProvider>
+    </QueryClientProvider>
   </BrowserRouter>,
   document.querySelector("#root")
 );
