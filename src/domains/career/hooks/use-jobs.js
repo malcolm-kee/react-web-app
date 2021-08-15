@@ -5,7 +5,9 @@ import { getJobs, getJobDetails } from "../career.service";
 export const useJobs = () => {
   const [page, setPage] = React.useState(1);
 
-  const query = useQuery(["jobs", page], () => getJobs(page));
+  const query = useQuery(["jobs", page], () => getJobs(page), {
+    staleTime: 5000,
+  });
 
   return {
     ...query,
@@ -15,5 +17,7 @@ export const useJobs = () => {
 };
 
 export const useJobDetails = (jobId) => {
-  return useQuery(["jobDetails", jobId], () => getJobDetails(jobId));
+  return useQuery(["jobDetails", jobId], () => getJobDetails(jobId), {
+    staleTime: 5000,
+  });
 };
