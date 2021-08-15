@@ -2,6 +2,7 @@ import { BASE_URL } from "const";
 import { CareerItem, useJobs } from "domains/career";
 import { fetchJson } from "lib/fetch-json";
 import * as React from "react";
+import { useMutation } from "react-query";
 import { TextInput } from "../components/text-input";
 
 const createJob = (data) =>
@@ -12,6 +13,8 @@ const createJob = (data) =>
     },
     body: data,
   });
+
+const useCreateJobMutation = () => useMutation((data) => createJob(data));
 
 const usePersistedState = (storageKey, defaultValue) => {
   const [value, setValue] = React.useState(
@@ -36,6 +39,7 @@ export const Career = () => {
   const titleInputRef = React.useRef();
 
   const { page, setPage, data: jobs, refetch } = useJobs();
+  const createJobMutation = useCreateJobMutation();
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -43,24 +47,29 @@ export const Career = () => {
         <form
           onSubmit={(ev) => {
             ev.preventDefault();
-            createJob({
-              title,
-              level,
-              department,
-              summary,
-              headcount: Number(headcount),
-            }).then(() => {
-              refetch();
-              setTitle("");
-              setLevel("internship");
-              setDepartment("");
-              setSummary("");
-              setHeadcount(1);
+            createJobMutation.mutate(
+              {
+                title,
+                level,
+                department,
+                summary,
+                headcount: Number(headcount),
+              },
+              {
+                onSuccess: () => {
+                  refetch();
+                  setTitle("");
+                  setLevel("internship");
+                  setDepartment("");
+                  setSummary("");
+                  setHeadcount(1);
 
-              if (titleInputRef.current) {
-                titleInputRef.current.focus();
+                  if (titleInputRef.current) {
+                    titleInputRef.current.focus();
+                  }
+                },
               }
-            });
+            );
           }}
           className="p-3"
         >
@@ -77,6 +86,7 @@ export const Career = () => {
                 onChangeValue={setTitle}
                 required
                 ref={titleInputRef}
+                disabled={createJobMutation.isLoading}
               />
             </div>
             <div>
@@ -89,6 +99,7 @@ export const Career = () => {
                 value={level}
                 onChange={(ev) => setLevel(ev.target.value)}
                 required
+                disabled={createJobMutation.isLoading}
               >
                 <option value="internship">Internship</option>
                 <option value="entry">Entry</option>
@@ -108,6 +119,7 @@ export const Career = () => {
                 id="department"
                 placeholder="e.g. Engineering"
                 required
+                disabled={createJobMutation.isLoading}
               />
             </div>
             <div>
@@ -120,6 +132,7 @@ export const Career = () => {
                 value={summary}
                 onChange={(ev) => setSummary(ev.target.value)}
                 required
+                disabled={createJobMutation.isLoading}
               />
             </div>
             <div>
@@ -133,10 +146,11 @@ export const Career = () => {
                 value={headcount}
                 onChangeValue={setHeadcount}
                 required
+                disabled={createJobMutation.isLoading}
               />
             </div>
             <div>
-              <button>ADD</button>
+              <button disabled={createJobMutation.isLoading}>ADD</button>
             </div>
           </div>
         </form>
