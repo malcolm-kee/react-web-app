@@ -3,9 +3,12 @@
  * @param {RequestInfo} info
  * @param {RequestInit} [init]
  */
-export const fetchJson = (info, { headers, body, ...init } = {}) =>
-  fetch(info, {
+export const fetchJson = (info, { headers, body, ...init } = {}) => {
+  const abortController = new AbortController();
+
+  const result = fetch(info, {
     ...init,
+    signal: abortController.signal,
     body: body && typeof body === "object" ? JSON.stringify(body) : body,
     headers: Object.assign(
       {
@@ -32,3 +35,8 @@ export const fetchJson = (info, { headers, body, ...init } = {}) =>
         throw err;
       }
     });
+
+  result.cancel = () => abortController.abort();
+
+  return result;
+};
