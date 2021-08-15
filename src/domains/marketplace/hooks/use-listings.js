@@ -1,26 +1,16 @@
 import * as React from "react";
+import { useQuery } from "react-query";
 import { getListingDetails, getListings } from "../marketplace.service";
 
 export const useListings = () => {
-  const [listings, setListings] = React.useState(undefined);
   const [page, setPage] = React.useState(1);
 
-  const loadListings = (pageNum, signal) =>
-    getListings(pageNum, signal).then((data) => setListings(data));
-
-  React.useEffect(() => {
-    const ab = new AbortController();
-    loadListings(page, ab.signal);
-    return () => {
-      ab.abort();
-    };
-  }, [page]);
+  const query = useQuery("listings", () => getListings(page));
 
   return {
-    listings,
+    ...query,
     page,
     setPage,
-    loadListings,
   };
 };
 

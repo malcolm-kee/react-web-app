@@ -1,7 +1,7 @@
 import { ListingItem, useListings } from "domains/marketplace";
 
 export const MarketplacePublic = () => {
-  const { listings } = useListings();
+  const { data: listings, isLoading } = useListings();
 
   return (
     <div className="max-w-7xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:px-8">
@@ -10,7 +10,7 @@ export const MarketplacePublic = () => {
           Marketplace
         </h1>
       </div>
-      {listings ? (
+      {listings && (
         <div className="grid md:grid-cols-2 gap-x-4 gap-y-8 xl:grid-cols-3 xl:gap-x-6">
           {listings.map((item) => (
             <ListingItem
@@ -25,9 +25,8 @@ export const MarketplacePublic = () => {
             />
           ))}
         </div>
-      ) : (
-        <div className="p-12 text-center text-3xl">Loading...</div>
-      )}
+      )}{" "}
+      {isLoading && <div className="p-12 text-center text-3xl">Loading...</div>}
     </div>
   );
 };
