@@ -1,7 +1,7 @@
 import { BASE_URL } from "const";
 import { ListingItem, useListings } from "domains/marketplace";
 import * as React from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { Select } from "../components/select";
 import { Textarea } from "../components/textarea";
 
@@ -14,7 +14,12 @@ const createListing = (data) =>
     },
   }).then((res) => res.json());
 
-const useCreateListingMutation = () => useMutation(createListing);
+const useCreateListingMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation(createListing, {
+    onSuccess: () => queryClient.invalidateQueries("listings"),
+  });
+};
 
 const usePersistedState = (storageKey, defaultValue) => {
   const [value, setValue] = React.useState(
@@ -29,7 +34,7 @@ const usePersistedState = (storageKey, defaultValue) => {
 };
 
 export const Marketplace = () => {
-  const { data: listings, refetch, page, setPage } = useListings();
+  const { data: listings, page, setPage } = useListings();
 
   const [title, setTitle] = usePersistedState("title", "");
 
@@ -62,7 +67,6 @@ export const Marketplace = () => {
             },
             {
               onSuccess: () => {
-                refetch();
                 setTitle("");
                 setPrice("");
                 setDescription("");
