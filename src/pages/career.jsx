@@ -83,7 +83,7 @@ export const Career = () => {
                 ref={titleInputRef}
                 disabled={createJobMutation.isLoading}
               />
-              {formik.errors.title && (
+              {formik.touched.title && formik.errors.title && (
                 <div className="block text-xs text-red-500">
                   {formik.errors.title}
                 </div>
@@ -106,7 +106,7 @@ export const Career = () => {
                 <option value="experienced">Experienced</option>
                 <option value="manager">Manager</option>
               </select>
-              {formik.errors.level && (
+              {formik.touched.level && formik.errors.level && (
                 <div className="block text-xs text-red-500">
                   {formik.errors.level}
                 </div>
@@ -126,7 +126,7 @@ export const Career = () => {
                 placeholder="e.g. Engineering"
                 disabled={createJobMutation.isLoading}
               />
-              {formik.errors.department && (
+              {formik.touched.department && formik.errors.department && (
                 <div className="block text-xs text-red-500">
                   {formik.errors.department}
                 </div>
@@ -144,7 +144,7 @@ export const Career = () => {
                 onBlur={formik.handleBlur}
                 disabled={createJobMutation.isLoading}
               />
-              {formik.errors.summary && (
+              {formik.touched.summary && formik.errors.summary && (
                 <div className="block text-xs text-red-500">
                   {formik.errors.summary}
                 </div>
@@ -163,7 +163,7 @@ export const Career = () => {
                 onBlur={formik.handleBlur}
                 disabled={createJobMutation.isLoading}
               />
-              {formik.errors.headcount && (
+              {formik.touched.headcount && formik.errors.headcount && (
                 <div className="block text-xs text-red-500">
                   {formik.errors.headcount}
                 </div>
