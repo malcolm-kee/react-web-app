@@ -3,6 +3,34 @@ import { useFormik } from "formik";
 import * as React from "react";
 import { TextInput } from "../components/text-input";
 
+const validate = (values) => {
+  const errors = {};
+
+  if (!values.title) {
+    errors.title = "Title is required";
+  }
+
+  if (!values.level) {
+    errors.level = "Level is required";
+  }
+
+  if (!values.department) {
+    errors.department = "Department is required";
+  }
+
+  if (!values.summary) {
+    errors.summary = "Summary is required";
+  }
+
+  if (!values.headcount) {
+    errors.headcount = "Headcount is required";
+  } else if (Number(values.headcount) < 1) {
+    errors.headcount = "Headcount must be at least 1";
+  }
+
+  return errors;
+};
+
 export const Career = () => {
   const titleInputRef = React.useRef();
 
@@ -16,6 +44,7 @@ export const Career = () => {
       summary: "",
       headcount: 1,
     },
+    validate,
     onSubmit: (values) => {
       createJobMutation.mutate(
         {
@@ -51,10 +80,14 @@ export const Career = () => {
                 value={formik.values.title}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                required
                 ref={titleInputRef}
                 disabled={createJobMutation.isLoading}
               />
+              {formik.errors.title && (
+                <div className="block text-xs text-red-500">
+                  {formik.errors.title}
+                </div>
+              )}
             </div>
             <div>
               <label className="block text-sm" htmlFor="level">
@@ -66,7 +99,6 @@ export const Career = () => {
                 value={formik.values.level}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                required
                 disabled={createJobMutation.isLoading}
               >
                 <option value="internship">Internship</option>
@@ -74,6 +106,11 @@ export const Career = () => {
                 <option value="experienced">Experienced</option>
                 <option value="manager">Manager</option>
               </select>
+              {formik.errors.level && (
+                <div className="block text-xs text-red-500">
+                  {formik.errors.level}
+                </div>
+              )}
             </div>
             <div>
               <label className="block text-sm" htmlFor="department">
@@ -87,9 +124,13 @@ export const Career = () => {
                 name="department"
                 id="department"
                 placeholder="e.g. Engineering"
-                required
                 disabled={createJobMutation.isLoading}
               />
+              {formik.errors.department && (
+                <div className="block text-xs text-red-500">
+                  {formik.errors.department}
+                </div>
+              )}
             </div>
             <div>
               <label className="block text-sm" htmlFor="summary">
@@ -101,9 +142,13 @@ export const Career = () => {
                 value={formik.values.summary}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                required
                 disabled={createJobMutation.isLoading}
               />
+              {formik.errors.summary && (
+                <div className="block text-xs text-red-500">
+                  {formik.errors.summary}
+                </div>
+              )}
             </div>
             <div>
               <label className="block text-sm" htmlFor="headcount">
@@ -116,9 +161,13 @@ export const Career = () => {
                 value={formik.values.headcount}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                required
                 disabled={createJobMutation.isLoading}
               />
+              {formik.errors.headcount && (
+                <div className="block text-xs text-red-500">
+                  {formik.errors.headcount}
+                </div>
+              )}
             </div>
             <div>
               <button type="submit" disabled={createJobMutation.isLoading}>
