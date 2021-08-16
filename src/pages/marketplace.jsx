@@ -1,5 +1,6 @@
 import { BASE_URL } from "const";
 import { ListingItem, useListings } from "domains/marketplace";
+import { useFormik } from "formik";
 import * as React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { Select } from "../components/select";
@@ -21,67 +22,45 @@ const useCreateListingMutation = () => {
   });
 };
 
-const usePersistedState = (storageKey, defaultValue) => {
-  const [value, setValue] = React.useState(
-    () => sessionStorage.getItem(storageKey) || defaultValue
-  );
-
-  React.useEffect(() => {
-    sessionStorage.setItem(storageKey, value);
-  }, [value, storageKey]);
-
-  return [value, setValue];
-};
-
 export const Marketplace = () => {
   const { data: listings, page, setPage } = useListings();
-
-  const [title, setTitle] = usePersistedState("title", "");
-
-  const [price, setPrice] = usePersistedState("price", "");
-  const [description, setDescription] = usePersistedState("description", "");
-  const [condition, setCondition] = usePersistedState("condition", "new");
-  const [availability, setAvailability] = usePersistedState(
-    "availability",
-    "in-stock"
-  );
-  const [numOfStock, setNumOfStock] = usePersistedState("numOfStock", "");
 
   const titleInputRef = React.useRef();
 
   const createListingMutation = useCreateListingMutation();
 
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      price: "",
+      description: "",
+      condition: "new",
+      availability: "in-stock",
+      numOfStock: "",
+    },
+    onSubmit: (values) => {
+      createListingMutation.mutate(
+        {
+          ...values,
+          price: Number(values.price),
+          numOfStock: Number(values.numOfStock),
+        },
+        {
+          onSuccess: () => {
+            formik.resetForm();
+
+            if (titleInputRef.current) {
+              titleInputRef.current.focus();
+            }
+          },
+        }
+      );
+    },
+  });
+
   return (
     <div>
-      <form
-        onSubmit={(ev) => {
-          ev.preventDefault();
-          createListingMutation.mutate(
-            {
-              title,
-              price: Number(price),
-              description,
-              condition,
-              availability,
-              numOfStock: Number(numOfStock),
-            },
-            {
-              onSuccess: () => {
-                setTitle("");
-                setPrice("");
-                setDescription("");
-                setCondition("new");
-                setAvailability("in-stock");
-                setNumOfStock("");
-
-                if (titleInputRef.current) {
-                  titleInputRef.current.focus();
-                }
-              },
-            }
-          );
-        }}
-      >
+      <form onSubmit={formik.handleSubmit}>
         <div className="p-3">New Listing</div>
         <div className="space-y-5 p-3">
           <div>
@@ -91,8 +70,9 @@ export const Marketplace = () => {
             <input
               type="text"
               id="title"
-              value={title}
-              onChange={(ev) => setTitle(ev.target.value)}
+              value={formik.values.title}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               required
               ref={titleInputRef}
             />
@@ -104,8 +84,9 @@ export const Marketplace = () => {
             <input
               type="number"
               id="price"
-              value={price}
-              onChange={(ev) => setPrice(ev.target.value)}
+              value={formik.values.price}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               required
             />
           </div>
@@ -115,8 +96,9 @@ export const Marketplace = () => {
             </label>
             <Textarea
               id="description"
-              value={description}
-              onChangeValue={setDescription}
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               required
             />
           </div>
@@ -126,8 +108,9 @@ export const Marketplace = () => {
             </label>
             <Select
               id="condition"
-              value={condition}
-              onChangeValue={setCondition}
+              value={formik.values.condition}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               required
             >
               <option value="new">New</option>
@@ -142,8 +125,9 @@ export const Marketplace = () => {
             </label>
             <Select
               id="availability"
-              value={availability}
-              onChangeValue={setAvailability}
+              value={formik.values.price}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               required
             >
               <option value="in-stock">In Stock</option>
@@ -157,13 +141,14 @@ export const Marketplace = () => {
             <input
               type="number"
               id="numOfStock"
-              value={numOfStock}
-              onChange={(ev) => setNumOfStock(ev.target.value)}
+              value={formik.values.numOfStock}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               required
             />
           </div>
           <div>
-            <button>ADD</button>
+            <button type="submit">ADD</button>
           </div>
         </div>
       </form>
