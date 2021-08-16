@@ -22,6 +22,38 @@ const useCreateListingMutation = () => {
   });
 };
 
+const validate = (values) => {
+  const errors = {};
+
+  if (!values.title) {
+    errors.title = "Title is required";
+  }
+
+  if (!values.price) {
+    errors.price = "Price is required";
+  } else if (Number(values.price) <= 0) {
+    errors.price = "Price must be more than 0";
+  }
+
+  if (!values.description) {
+    errors.description = "Description is required";
+  }
+
+  if (!values.condition) {
+    errors.condition = "Condition is required";
+  }
+
+  if (!values.availability) {
+    errors.availability = "Availability is required";
+  }
+
+  if (!values.numOfStock) {
+    errors.numOfStock = "Number of Available Stock is required";
+  }
+
+  return errors;
+};
+
 export const Marketplace = () => {
   const { data: listings, page, setPage } = useListings();
 
@@ -38,6 +70,7 @@ export const Marketplace = () => {
       availability: "in-stock",
       numOfStock: "",
     },
+    validate,
     onSubmit: (values) => {
       createListingMutation.mutate(
         {
@@ -73,9 +106,13 @@ export const Marketplace = () => {
               value={formik.values.title}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              required
               ref={titleInputRef}
             />
+            {formik.touched.title && formik.errors.title && (
+              <div className="block text-xs text-red-500">
+                {formik.errors.title}
+              </div>
+            )}
           </div>
           <div>
             <label htmlFor="price" className="block text-sm font-medium">
@@ -87,8 +124,12 @@ export const Marketplace = () => {
               value={formik.values.price}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              required
             />
+            {formik.touched.price && formik.errors.price && (
+              <div className="block text-xs text-red-500">
+                {formik.errors.price}
+              </div>
+            )}
           </div>
           <div>
             <label htmlFor="description" className="block text-sm font-medium">
@@ -99,8 +140,12 @@ export const Marketplace = () => {
               value={formik.values.description}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              required
             />
+            {formik.touched.description && formik.errors.description && (
+              <div className="block text-xs text-red-500">
+                {formik.errors.description}
+              </div>
+            )}
           </div>
           <div>
             <label htmlFor="condition" className="block text-sm font-medium">
@@ -111,13 +156,17 @@ export const Marketplace = () => {
               value={formik.values.condition}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              required
             >
               <option value="new">New</option>
               <option value="used_like-new">Used (like new)</option>
               <option value="used_good">Used (good)</option>
               <option value="used_fair">Used (fair)</option>
             </Select>
+            {formik.touched.condition && formik.errors.condition && (
+              <div className="block text-xs text-red-500">
+                {formik.errors.condition}
+              </div>
+            )}
           </div>
           <div>
             <label htmlFor="availability" className="block text-sm font-medium">
@@ -128,11 +177,15 @@ export const Marketplace = () => {
               value={formik.values.price}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              required
             >
               <option value="in-stock">In Stock</option>
               <option value="single-item">Single Item</option>
             </Select>
+            {formik.touched.availability && formik.errors.availability && (
+              <div className="block text-xs text-red-500">
+                {formik.errors.availability}
+              </div>
+            )}
           </div>
           <div>
             <label htmlFor="numOfStock" className="block text-sm font-medium">
@@ -144,8 +197,12 @@ export const Marketplace = () => {
               value={formik.values.numOfStock}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              required
             />
+            {formik.touched.numOfStock && formik.errors.numOfStock && (
+              <div className="block text-xs text-red-500">
+                {formik.errors.numOfStock}
+              </div>
+            )}
           </div>
           <div>
             <button type="submit">ADD</button>
