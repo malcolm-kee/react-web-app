@@ -3,6 +3,7 @@ import { ListingItem, useListings } from "domains/marketplace";
 import { useFormik } from "formik";
 import * as React from "react";
 import { useMutation, useQueryClient } from "react-query";
+import * as Yup from "yup";
 import { Select } from "../components/select";
 import { Textarea } from "../components/textarea";
 
@@ -22,37 +23,16 @@ const useCreateListingMutation = () => {
   });
 };
 
-const validate = (values) => {
-  const errors = {};
-
-  if (!values.title) {
-    errors.title = "Title is required";
-  }
-
-  if (!values.price) {
-    errors.price = "Price is required";
-  } else if (Number(values.price) <= 0) {
-    errors.price = "Price must be more than 0";
-  }
-
-  if (!values.description) {
-    errors.description = "Description is required";
-  }
-
-  if (!values.condition) {
-    errors.condition = "Condition is required";
-  }
-
-  if (!values.availability) {
-    errors.availability = "Availability is required";
-  }
-
-  if (!values.numOfStock) {
-    errors.numOfStock = "Number of Available Stock is required";
-  }
-
-  return errors;
-};
+const validationSchema = Yup.object({
+  title: Yup.string().required("Title is required"),
+  price: Yup.number()
+    .required("Price is required")
+    .moreThan(0, "Price must be more than 0"),
+  description: Yup.string().required("Description is required"),
+  condition: Yup.string().required("Condition is required"),
+  availability: Yup.string().required("Availability is required"),
+  numOfStock: Yup.number().required("Number of Available Stock is required"),
+});
 
 export const Marketplace = () => {
   const { data: listings, page, setPage } = useListings();
@@ -70,7 +50,7 @@ export const Marketplace = () => {
       availability: "in-stock",
       numOfStock: "",
     },
-    validate,
+    validationSchema,
     onSubmit: (values) => {
       createListingMutation.mutate(
         {
