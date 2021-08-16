@@ -2,34 +2,17 @@ import { CareerItem, useCreateJobMutation, useJobs } from "domains/career";
 import { useFormik } from "formik";
 import * as React from "react";
 import { TextInput } from "../components/text-input";
+import * as Yup from "yup";
 
-const validate = (values) => {
-  const errors = {};
-
-  if (!values.title) {
-    errors.title = "Title is required";
-  }
-
-  if (!values.level) {
-    errors.level = "Level is required";
-  }
-
-  if (!values.department) {
-    errors.department = "Department is required";
-  }
-
-  if (!values.summary) {
-    errors.summary = "Summary is required";
-  }
-
-  if (!values.headcount) {
-    errors.headcount = "Headcount is required";
-  } else if (Number(values.headcount) < 1) {
-    errors.headcount = "Headcount must be at least 1";
-  }
-
-  return errors;
-};
+const validationSchema = Yup.object({
+  title: Yup.string().required("Title is required"),
+  level: Yup.string().required("Level is required"),
+  department: Yup.string().required("Department is required"),
+  summary: Yup.string().required("Summary is required"),
+  headcount: Yup.number()
+    .required("Headcount is required")
+    .min(1, "Headcount must be at least 1"),
+});
 
 export const Career = () => {
   const titleInputRef = React.useRef();
@@ -44,7 +27,7 @@ export const Career = () => {
       summary: "",
       headcount: 1,
     },
-    validate,
+    validationSchema,
     onSubmit: (values) => {
       createJobMutation.mutate(
         {
