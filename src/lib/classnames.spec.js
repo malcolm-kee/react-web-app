@@ -9,3 +9,9 @@ test("classnames combine multiple classNames into one", () => {
 
   expect(result).toBe("text-lg bg-black font-bold");
 });
+
+test("classNames can handle array", () => {
+  const result = classNames("text-lg", false, ["font-bold"]);
+
+  expect(result).toBe("text-lg font-bold");
+});
