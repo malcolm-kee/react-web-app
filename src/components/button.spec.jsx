@@ -1,12 +1,8 @@
+import { render } from "@testing-library/react";
 import { Button } from "./button";
-import * as ReactDOM from "react-dom";
 
 test('<Button variant="primary" >', () => {
-  const container = document.createElement("div");
-
-  ReactDOM.render(<Button>Text</Button>, container);
+  const { container } = render(<Button>Text</Button>);
 
   expect(container.firstChild.type).toBe("button");
-
-  ReactDOM.unmountComponentAtNode(container);
 });
