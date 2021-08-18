@@ -1,5 +1,6 @@
 import * as React from "react";
 import { fetchJson } from "lib/fetch-json";
+import { useQuery } from "react-query";
 import { BASE_URL } from "const";
 
 const ACCESS_TOKEN_STORAGE = "auth";
@@ -109,4 +110,13 @@ export const useLogout = () => {
     auth.logout();
     localStorage.removeItem(ACCESS_TOKEN_STORAGE);
   };
+};
+
+export const useAuthenticatedQuery = (queryKey, queryFn, options) => {
+  const { status, accessToken } = useAuth();
+
+  return useQuery([queryKey, status], () => queryFn({ accessToken }), {
+    ...options,
+    enabled: status === "authenticated",
+  });
 };
