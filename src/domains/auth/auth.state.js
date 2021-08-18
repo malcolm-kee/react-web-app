@@ -17,7 +17,7 @@ const AUTH_DEFAULT_STATE = storedAccessToken
       accessToken: null,
     };
 
-const AuthContext = React.createContext();
+export const AuthContext = React.createContext();
 
 const authReducer = (state, event) => {
   switch (event.type) {
